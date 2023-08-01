@@ -1,0 +1,133 @@
+<div class="row align-items-center py-1 px-0 m-1 gap-2">
+    <div class="col order-first min-sm px-0" style="text-align: left;">
+        전체 댓글 <span class="text-danger">{{ total_comments }}</span>개
+    </div>
+</div>
+<table class="table table-sm mb-2">
+    <thead class="table-light">
+        <tr class="">     
+            <td class="" style="text-align: left;">
+                <p class="min-sm mb-0">User</p></td>
+            <td class="col-8 col-lg-8" style="text-align: left;">
+                <p class="min-sm mb-0">Content</p>
+            </td>     
+            <td class="" style="text-align: left;">
+                <p class="min-sm mb-0"></p>
+            </td>        
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        {% if comments %}
+            {% for comment in comments %}
+            <tr>
+                <td class="col-2 col-lg-2" style="text-align: left;">
+                    <p class="min-sm mb-0">{{ comment.author.user_id }} <span class="min-xs">({{ comment.user_ip|slice:":7" }})</span></p>
+                </td>
+                <td class="col-8 col-lg-8" style="text-align: left;">
+                    <p class="min-sm my-0 d-flex align-items-center">{{ comment.content }}</p>
+                </td>
+                <td class="col-2 col-lg-2" style="text-align: right;">
+                    <p class="min-xs mb-0">
+                        {% if login_session %}
+                        <a class="btn-sp" type="button" data-bs-toggle="collapse" data-bs-target="#replyForm{{ comment.id }}" 
+                        aria-expanded="false" aria-controls="replyForm{{ comment.id }}">답글</a>
+                        {% endif %}
+                        {% if login_session and comment.author.user_id == login_session %}
+                        <a href="{% url 'board:comment_delete' pk=comment.pk %}" type="button" class="btn-sp">
+                            <span class="min-xs">삭제</span>
+                        </a>
+                        {% endif %}
+                        {% if comment.display_time|date:"Ymd" == timezone.now|date:"Ymd" %}
+                        {{ comment.display_time|time:"G:i" }}
+                        {% else %}
+                        {{ comment.display_time|date:"m.d.y" }} {{ comment.display_time|time:"G:i" }}
+                        {% endif %}
+                    </p>
+                </td>
+            </tr>
+                {% for reply in comment.replies_level_1.all %}
+                    <tr>
+                        <td class="col-2 col-lg-2" style="text-align: left;">
+                            <p class="min-sm mb-0 d-flex align-items-center">
+                                <i class="fas fa-arrow-turn-up fa-sm reply-icon"></i>
+
+                                <span class="min-xs">
+                                {{ reply.author.user_id }} 
+                                ({{ reply.user_ip|slice:":7" }})
+                                </span>
+                            </p>
+                        </td>
+                        <td class="col-8 col-lg-8" style="text-align: left;">
+                            <p class="min-sm my-0 d-flex align-items-center">{{ reply.content }}</p>
+                        </td>
+                        <td class="col-2 col-lg-2" style="text-align: right;">
+                            <p class="min-xs mb-0">
+                                {% if login_session and reply.author.user_id == login_session %}
+                                <a href="{% url 'board:reply_delete' pk=reply.pk %}" type="button" class="btn-sp">
+                                    <span class="min-xs">삭제</span>
+                                </a>
+                                {% endif %}
+                                {% if comment.display_time|date:"Ymd" == timezone.now|date:"Ymd" %}
+                                {{ reply.display_time|time:"G:i" }}
+                                {% else %}
+                                {{ reply.display_time|date:"m.d.y" }} {{ reply.display_time|time:"G:i" }}
+                                {% endif %}
+                            </p>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                <td colspan="3" class="table-light">
+                    <div class="collapse" id="replyForm{{ comment.id }}">
+                        <form class="collapse" id="replyForm{{ comment.id }}" method="post" action="{% url 'board:add_reply' comment.id %}">
+                            {% csrf_token %}
+                            <div class="input-group input-group-sm d-flex align-items-center"> 
+                                <p class="min-sm mb-0 px-2">{{ current_user }} <span class="min-xs">({{ user_ip|slice:":7" }})</span></p>
+                                {{ form.content }}
+                                <button class="btn btn-primary btn-xs" type="submit" id="button-addon2">
+                                    <span class="min-xs">
+                                    저장하기
+                                    </span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>                
+                </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="3"><p class="min-md my-0">댓글이 없습니다.</p></td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+{% if login_session %}
+<form method="post" action="{% url 'board:board_detail' pk=board.pk %}?page={{ page_obj.number }}{% if search_query %}&q={{ search_query }}{% endif %}">
+    {% csrf_token %}
+    <div class="input-group input-group-sm d-flex align-items-center mb-3 px-1">
+        <td class="">
+            <p class="min-sm mb-0 px-2"> {{ current_user }} <span class="min-xs">({{ user_ip|slice:":7" }})</span></p>
+            {{ form.content }}
+            <button class="btn btn-primary btn-xs" type="submit" id="button-addon2">
+                <span class="min-xs">
+                댓글달기
+                </span>
+            </button>
+        </td>
+    </div>
+</form>
+{% else %}
+<div class="row d-inline-flex align-items-center p-1 m-1">
+    <div class="col-md-12">
+        <div class="alert alert-primary alert-dismissible fade show" role="alert" style="margin-bottom: 0px;">
+            <span class="min-sm">로그인 하신 후 댓글을 작성하실 수 있습니다.</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <a href="{% url 'user:login' %}?next_url={{ request.path }}?page={{ page_obj.number }}">
+        </a>
+    </div>
+</div>
+{% endif %}
+
+  

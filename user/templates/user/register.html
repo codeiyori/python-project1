@@ -1,0 +1,21 @@
+{% extends 'home/index.html' %}
+
+{% block contents %}
+<div>회원가입 페이지!</div>
+
+<form action="" method="POST">
+    {% csrf_token %}
+
+    {% for form in forms %}
+    <div>
+        <label for="{{ form.id_for_label }}">{{ form.label }}</label>
+        {{ form }}
+    </div>
+    {% endfor %}
+
+    {% if error %}
+    {{ error }}
+    {% endif %}
+    <button type="submit" name="register-submit" value="register">회원가입하기</button>
+</form>
+{% endblock contents %}

@@ -1,0 +1,136 @@
+
+.min-lg {
+    font-size: 14px;
+}
+.min-md {
+    font-size: 13px;
+}
+.min-sm {
+    font-size: 12px;
+}
+.min-xs {
+    font-size: 11px;
+}
+@media screen and (max-width: 425px) {
+    .min-sm {
+      font-size: 11px;
+    }
+  }
+
+/* InputField size */
+.form-control-xs {
+    padding: .15rem .5rem;
+    font-size: .75rem;
+  }
+/* Summernote 스타일 */
+.note-editable {
+    width: 100%;
+    height: 300px; /* Summernote의 기본 높이 */
+}
+
+/* 이미지 스타일 */
+video {
+  max-width: 480px; /* 모바일에서 이미지의 최대 너비를 640px로 제한합니다. */
+  width: auto; /* 이미지가 부모 요소에 맞게 비율을 유지하도록 합니다. */
+  height: auto; /* 이미지가 비율을 유지하면서 자동으로 높이가 조정되도록 합니다. */
+}
+
+@media screen and (max-width: 768px) {
+  video {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* 일반적인 경우에 적용되는 스타일 */
+img {
+  max-width: 640px; /* 모바일에서 이미지의 최대 너비를 640px로 제한합니다. */
+  width: auto; /* 이미지가 부모 요소에 맞게 비율을 유지하도록 합니다. */
+  height: auto; /* 이미지가 비율을 유지하면서 자동으로 높이가 조정되도록 합니다. */
+}
+
+/* 모바일 환경에서 적용되는 스타일 (스크린 사이즈가 768px 이하) */
+@media screen and (max-width: 768px) {
+  img {
+    width: auto;
+    max-width: 100%; /* 이미지의 최대 너비를 부모 요소에 맞게 조정합니다. */
+    height: auto; /* 이미지가 비율을 유지하면서 자동으로 높이가 조정되도록 합니다. */
+  }
+}
+
+.board {
+    display: flex;
+}
+
+.divib::before,
+.divia::after {
+    content: "|";
+    color: #ccc;
+    font-size: 12px;
+    line-height: 12px;
+    padding: 0 7px 0 3px;
+    vertical-align: 1px;
+}
+
+::-webkit-scrollbar {
+    overflow: auto;
+    background-color: #f1f1f1;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #c0c0c0;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #888888;
+  }
+  
+  ::-webkit-scrollbar-thumb:active {
+    background-color: #5e5e5e;
+  }
+
+.btn-sp {
+    padding: 0px 4px;
+    border: 1px solid;
+    text-decoration: none;
+}
+.btn-sp:hover {
+    background-color: #e6e6e6;
+    text-decoration: none;
+}
+
+a.nav-link1.active {
+    color: blue;
+}
+a:hover {
+    text-decoration: underline;
+}
+.nav-link1 {
+    display: inline-block;
+    padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
+    font-size: var(--bs-nav-link-font-size);
+    font-weight: var(--bs-nav-link-font-weight);
+    color: var(--bs-nav-link-color);
+    text-decoration: none;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
+}
+tr:hover {
+    background-color: #fafafa;
+}
+tr.active {
+    background-color: #fdf5ff;
+}
+.reply-icon {
+  color: #0d6efd;
+  transform: rotate(90deg);
+  margin-right: 5px;
+}
+button.like-btn:hover > span.pill-btn {
+  border: 1px white solid;
+}
+.shadow1 {
+box-shadow: 0 3px 1px -2px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, .2)),0 2px 2px 0 
+var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, .14)),0 1px 5px 0 var(--v-shadow-key-penumbra-opacity, 
+rgba(0, 0, 0, .12));
+}

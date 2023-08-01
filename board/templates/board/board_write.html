@@ -1,0 +1,16 @@
+{% extends 'home/index.html' %}
+
+{% block contents %}
+<div>게시판 글쓰기</div>
+<form action="" method="POST">
+    {% csrf_token %}
+    {% for form in forms %}
+        <label for="{{ form.id_for_label }}">{{ form.label }}</label>
+        {{ form }}
+    {% endfor %}
+    {% if error %}
+    {{ error }}
+    {% endif %}
+    <button type="submit">등록하기</button>
+</form>
+{% endblock contents %}

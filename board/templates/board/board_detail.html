@@ -1,0 +1,52 @@
+{% extends 'home/index.html' %}
+{% block contents %}
+<div>
+    <span class="min-md">
+        <a href="/board/">게시판</a> > {{ board.board_name }}
+    </span>
+</div>
+<div style="border: 1px black solid; margin: 5px 0px;"></div>
+<div class="container">
+    <td>
+        <span class="min-lg">
+        <b>
+            {{ board.title }}
+        </b>
+        </span>
+    </td>
+</div>
+<div class="mb-2">
+    <span class="min-sm">{{ board.writer.user_id }}</span>
+    <span class="min-sm divib">{{ board.write_dttm }}</span>
+    <span class="min-sm divib">조회 :</span>
+    <span class="min-sm">{{ board.hits }}</span>
+    {% if login_session %}
+      {% if writer %}
+      <span class="min-sm divib"><a href="/board/detail/{{ board.id }}/modify/?{{ request.GET.urlencode }}">수정</a></span>
+      <span class="min-sm"><a href="/board/detail/{{ board.id }}/delete/?{{ request.GET.urlencode }}">삭제</a></span>
+      {% endif %}
+    {% endif %}
+</div>
+<div class="container">
+    {{ board.contents|safe }}
+</div>
+{% include 'board/board_detail_likes.html' %}
+{% include 'board/board_detail_comment.html' %}
+{% include 'board/board_detail_list.html' %}
+{% if login_session %}
+    <form method="GET" action="{% url 'board:board_detail' pk=board.pk %}">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <div class="input-group input-group-sm mb-0">
+                <input type="text" name="q" class="form-control" placeholder="검색어를 입력하세요" aria-label="검색어를 입력하세요" aria-describedby="button-addon2">
+                <button class="btn btn-primary btn-xs" type="submit" id="button-addon2">
+                    <span class="min-xs">검색</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    </form>
+{% endif %}
+{% endblock contents %}
+

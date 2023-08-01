@@ -1,0 +1,18 @@
+{% for reply in comment.replies.all %}
+<div class="reply">
+    <p>{{ reply.author.user_id }} <span class="min-xs">({{ reply.user_ip|slice:":7" }})</span></p>
+    <p class="min-sm my-0 d-flex align-items-center">{{ reply.content }}</p>
+    <p class="min-xs mb-0">
+        {% if login_session and reply.author.user_id == login_session %}
+        <a href="{% url 'board:comment_delete' pk=reply.pk %}">
+            <span class="min-xs">삭제</span>
+        </a>
+        {% endif %}
+        {% if reply.display_time|date:"Ymd" == timezone.now|date:"Ymd" %}
+        {{ reply.display_time|time:"G:i" }}
+        {% else %}
+        {{ reply.display_time|date:"m.d.y" }} {{ reply.display_time|time:"G:i" }}
+        {% endif %}
+    </p>
+</div>
+{% endfor %}

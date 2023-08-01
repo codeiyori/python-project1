@@ -1,0 +1,160 @@
+<table class="table table-sm">
+    <thead class="table-light">
+        <tr>
+            <div class="row align-items-center py-1 px-0 m-1 gap-2">
+                <div class="col order-last min-sm px-0" style="text-align: right;">        
+                {% if search_query %}
+                    <span class="text-danger">"{{ search_query }}"</span>에 대한 검색 결과
+                {% endif %}
+                {% if login_session %}
+                <a href="{% url 'board:board_write' %}" class="nav-link1">
+                    <button type="button" class="btn-sp">글쓰기</button>
+                </a>
+                {% else %}
+                <a href="{% url 'user:login'%}?next_url={{ request.path }}" class="nav-link1">
+                    <button type="button" class="btn-sp">로그인</button>
+                </a>           
+                {% endif %}
+                <a href="?page=1" class="nav-link1">
+                    <button type="button" class="btn-sp">목록</button>
+                </a>   
+                </div>
+                <div class="col order-first min-sm px-0" style="text-align: left;">
+                    전체 게시글 <span class="text-danger">{{ total_boards }}</span>개 
+                </div>
+            </div>
+        </tr>
+        <tr class="">     
+            <td class="" style="text-align: left;">
+                <p class="min-sm mb-0">#</p></td>
+            <td class="col-8 col-lg-8" style="text-align: left;">
+                <p class="min-sm mb-0">Title</p>
+            </td>
+            <td class="" style="text-align: center;"><p class="min-sm mb-0">User</p></td>
+            <td class="" style="text-align: center;"><p class="min-sm mb-0">Time</p></td>
+            <td class="" style="text-align: center;"><p class="min-sm mb-0">Views</p></td>             
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+    {% if boards %}
+        {% for board in page_obj %} 
+        <tr class="{% if board.pk == selected_board_pk %}active{% endif %}">     
+            <td class="" style="text-align: left;"><p class="min-sm mb-0">{{ board.pk }}</p></td>
+            <td class="" style="text-align: left;">
+                <p class="min-sm my-0 d-flex align-items-center gap-1">
+                    <a href="{% url 'board:board_detail' pk=board.pk %}?q={{ search_query }}&page={{ page_obj.number }}" class="nav-link1 {% if board.pk == selected_board_pk %}active{% endif %}">{{ board.title }}</a>
+                    <span class="badge rounded-pill text-bg-warning">{{ board.total_comments }}</span>
+                </p>
+            </td>
+            <td class="" style="text-align: center;"><p class="min-xs mb-0">{{ board.writer.user_id }}</p></td>
+            <td class="" style="text-align: center;"><p class="min-xs mb-0">{{ board.write_dttm|date:"Y-m-d" }}</p></td>  
+            <td class="" style="text-align: center;"><p class="min-xs mb-0">{{ board.hits }}</p></td>    
+        {% endfor %}
+        </tr>
+    {% else %}
+        <tr>
+            <td class="" colspan="5" style="text-align: center;">
+                <p class="min-md my-0">게시글이 없습니다.</p>
+            </td>
+        </tr>
+    {% endif %}
+    </tbody>
+</table>
+
+<nav aria-label="board_list pagination">
+    <ul class="pagination pagination-sm mb-2 d-flex justify-content-center align-items-center">
+        {% if page_obj.has_previous %}
+            {% if search_query %}
+                <li class="page-item">
+                    <a class="page-link" href="?q={{ search_query }}&page=1" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?q={{ search_query }}&page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="First">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link" aria-hidden="true">&laquo;&laquo;</span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link" aria-hidden="true">&laquo;</span>
+            </li>
+        {% endif %}
+
+        {% for page_number in page_range %}
+            {% if page_obj.number == page_number %}
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">{{ page_number }}</span>
+                </li>
+            {% else %}
+                {% if search_query %}
+                    <li class="page-item">
+                        <a class="page-link" href="?q={{ search_query }}&page={{ page_number }}">{{ page_number }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
+                    </li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            {% if search_query %}
+                <li class="page-item">
+                    <a class="page-link" href="?q={{ search_query }}&page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?q={{ search_query }}&page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link" aria-hidden="true">&raquo;</span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link" aria-hidden="true">&raquo;&raquo;</span>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% if not login_session %}
+<div class="row d-inline-flex align-items-center p-1 m-1">
+    <div class="col-md-12">
+        <div class="alert alert-primary alert-dismissible fade show" role="alert" style="margin-bottom: 0px;">
+            <span class="min-sm">로그인 하신 후 게시글을 작성하실 수 있습니다.</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+{% endif %}

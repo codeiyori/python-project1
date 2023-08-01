@@ -1,0 +1,19 @@
+{% extends 'home/index.html' %}
+{% block contents %}
+{% include 'board/board_detail_list.html' %}
+{% if login_session %}
+    <form method="GET" action="{% url 'board:board_list' %}">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <div class="input-group input-group-sm mb-0">
+                <input type="text" name="q" class="form-control" placeholder="검색어를 입력하세요" aria-label="검색어를 입력하세요" aria-describedby="button-addon2">
+                <button class="btn btn-primary btn-xs" type="submit" id="button-addon2">
+                    <span class="min-xs">검색</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    </form>
+{% endif %}
+{% endblock contents %}
