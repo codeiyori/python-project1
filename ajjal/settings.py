@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-1k$s)omdpu#3xo+p2#lh5#d-g(+!tm^tgr2yr5cfrtm^3ck960
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['http://my-app-ajjal-env.eba-ynniveci.us-east-1.elasticbeanstalk.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['webajjalapp1-env.us-east-1.elasticbeanstalk.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
