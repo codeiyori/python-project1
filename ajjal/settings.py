@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-1k$s)omdpu#3xo+p2#lh5#d-g(+!tm^tgr2yr5cfrtm^3ck960
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['webajjalapp1-env.us-east-1.elasticbeanstalk.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['ajjalwebappv1-env.us-east-1.elasticbeanstalk.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -95,6 +95,9 @@ DATABASES = {
         'PASSWORD': 'Yoora3dowajo',
         'HOST': '154.49.142.12',
         'PORT': '3306',
+        'OPTIONS': {
+            'sql_mode': 'STRICT_ALL_TABLES',  # Strict Mode 활성화
+        }       
     }
 }
 
